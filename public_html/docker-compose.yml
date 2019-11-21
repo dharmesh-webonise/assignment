@@ -1,0 +1,63 @@
+version: '3.0'
+services:
+  db:
+    build: docker-configs/dockerfiles/db/
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker-configs/db/logs:/var/logs/mysql/custom_logs
+      - ./docker-configs/db/custom_configs:/etc/mysql/conf.d
+      - mysql-data-store:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Test@123
+      MYSQL_VERSION: latest
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Test@123
+      MYSQL_DATABASE: shoping_cart_api
+    networks:
+      - Shoppin-Cart
+  php:
+    build: docker-configs/dockerfiles/php
+    expose:
+      - "9000"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - Shoppin-Cart
+  web:
+    image: nginx:latest
+    # build: docker-configs/dockerfiles/apache2/
+    volumes:
+      # - ./docker-configs/apache2/apache2.conf:/etc/apache2/apache2.conf
+      - ./docker-configs/apache2/nginx/ngnix.conf:/etc/nginx/nginx.conf
+      - ./docker-configs/apache2/nginx/develop-webonise.com.conf:/etc/nginx/sites-enabled/develop-webonise.com
+      # - ./docker-configs/apache2/ngnix/develop-webonise.com.conf:/etc/nginx/conf.d/default-ssl.conf
+      # - ./docker-configs/web/certs/localhost.crt:/etc/ssl/certs/localhost.crt
+      # - ./docker-configs/web/certs/localhost.key:/etc/ssl/private/localhost.key
+      # - ./docker-configs/apache2/develop-webonise.com.conf:/etc/apache2/sites-enabled/www.develop-webonise.com
+      # - ./docker-configs/apache2/develop-webonise.com.conf:/etc/apache2/sites-available/www.develop-webonise.com.conf
+      # - ./docker-configs/apache2/ports.conf:/etc/apache2/ports.conf
+      - ./:/var/www/html  
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+      - db
+    links:
+      - db
+    networks:
+      Shoppin-Cart:
+        aliases:
+          - develop-webonise.com
+volumes:
+  mysql-data-store:
+  gem-path:
+networks:
+  Shoppin-Cart:
+    driver: bridge
+
+

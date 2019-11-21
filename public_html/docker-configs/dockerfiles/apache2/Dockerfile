@@ -1,0 +1,1 @@
+FROM symbiote/apache2
