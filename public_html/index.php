@@ -1,4 +1,5 @@
 <?php
+
 require_once 'constant.php';
 require_once 'function.php';
 require_once 'Model/Product.php';
@@ -13,7 +14,6 @@ $array = explode("/", $request);
 $id = intval($array[3]);
 $requestedURL =  str_replace(APP_DIR,'',$request);
 $requestedMethod = $_SERVER['REQUEST_METHOD']; 
-
 $router = [
     '/' => array('controller'=>'IndexController','action'=>'index'),
     //Create auth route for the user
