@@ -18,16 +18,20 @@ steps for installation
  - Clone the repository 
  - import database.sql file
 
+```
+
 ```bash
 docker setup 
   - install docker 
   - install docker-compose
   - run command : docker-compose build
   - run command : docker-compose up
-```
+
 use Basic auth for authrization 
-username  - test-webonise
-password  - Test1234
+    username  - test-webonise
+    password  - Test1234
+
+
 ```
 
 ## Routes
