@@ -31,7 +31,9 @@ class Cart{
         $result = $stmt->execute();
         if($result == 1){
             $cart = $stmt->fetchAll();
+	    
             if(empty($cart)){
+
                 return (object)array("success"=>true,"message"=>"Nothing available in cart");
             }
             /* Product calculation part */
@@ -45,10 +47,13 @@ class Cart{
                 $product = new \Model\Product($this->con);
                 $product->id  = $cart_value['cart_product_id'];
                 $product_data = $product->read_one();
+                
                 $discount = calculate_discount($cart_value['cart_product_price'],$cart_value['cart_product_discount']);
+                
                 $tax = calculate_tax($cart_value['cart_product_price'],$cart_value['cart_product_tax']);
                 $Product_CartAmount =  $cart_value['cart_product_price'] - $discount + $tax;
                 $TotalCartValue += bcdiv($Product_CartAmount,1,2);
+                
                 $TotalTax += $tax; 
                 $TotalDiscount += $discount; 
                 $CartData['product_name'] = $product_data->data->name;
@@ -59,6 +64,7 @@ class Cart{
                 $CartData['product_tax'] = $tax;
                 $CartData['product_discount'] = $discount;
                 $OverallCart[] = $CartData;
+                
             }
             $OverallCart['cartTotalAmount'] = $TotalCartValue;
             $OverallCart['cartTotalTax'] = $TotalTax;

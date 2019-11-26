@@ -14,6 +14,7 @@ $array = explode("/", $request);
 $id = intval($array[3]);
 $requestedURL =  str_replace(APP_DIR,'',$request);
 $requestedMethod = $_SERVER['REQUEST_METHOD']; 
+
 $router = [
     '/' => array('controller'=>'IndexController','action'=>'index'),
     //Create auth route for the user
@@ -47,6 +48,7 @@ if (checkRouting($router,$requestedURL)){
     $dbInstance = Database::getInstance();
     $dbAdapter = $dbInstance->getConnection();
     $controller = $router[$requestedURL]['controller'];
+
     if($controller != 'AuthController' && !isset($_SESSION['API_AUTH'])){
         $getHeader = getallheaders();
         $data = explode(" ",$getHeader['Remote-User'])[1];
@@ -61,6 +63,7 @@ if (checkRouting($router,$requestedURL)){
         }
     }
     $method = $router[$requestedURL]['action'];
+    
     require './Controllers/'.$controller.'.php';
     $object = $controller::getInstance($dbAdapter);
     $methodsOfClass = get_class_methods($object);
