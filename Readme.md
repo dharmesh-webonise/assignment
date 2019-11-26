@@ -17,6 +17,7 @@ steps for installation
  - name folder as develop-webonise.com
  - Clone the repository 
  - import database.sql file
+ - install php-bcmath library
 
 ```
 
